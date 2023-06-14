@@ -1,0 +1,24 @@
+{
+  "extends": "ts-node/node16/tsconfig.json",
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+  },
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "Node16",
+    "rootDir": "./", 
+    "outDir": "./dist",
+    "removeComments": true,
+    "esModuleInterop": true,    
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node16",
+    "resolveJsonModule": true
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

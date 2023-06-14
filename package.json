@@ -1,0 +1,28 @@
+{
+  "name": "stickymessage-discord-bot",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon -e .ts --exec node --loader=ts-node/esm index.ts",
+    "build": "tsc --build ./tsconfig.json",
+    "start": "node ."
+  },
+  "keywords": [],
+  "author": "rzkfyn",
+  "repository": "https://github.com/rzkfyn/stickymessage-discord-bot",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "discord.js": "^14.8.0",
+    "dotenv": "^16.0.3"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}
