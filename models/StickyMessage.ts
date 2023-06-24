@@ -5,6 +5,8 @@ const schema = new Schema({
   channelId: String,
   messageId: String,
   content: String,
+  embed: Boolean,
+  image: String,
   active: Boolean
 }, {
   timestamps: true

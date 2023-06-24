@@ -9,8 +9,11 @@ export const run = async (message: Message, args: string[]) => {
     const sentMessage = await message.channel.send(args.join(' '));
 
     if (stickyMessage) {
+      const lasStickyMessage = message.channel.messages.cache.get(stickyMessage.messageId as string);
+      if (lasStickyMessage) await lasStickyMessage.delete();
+
       await StickyMessage.updateOne({ serverId: message.guildId, channelId: message.channelId }, {
-        content: args.join(' '), messageId: sentMessage.id
+        content: args.join(' '), messageId: sentMessage.id, embed: false, active: true
       });
     } else {
       await StickyMessage.create({
@@ -18,6 +21,7 @@ export const run = async (message: Message, args: string[]) => {
         channelId: message.channelId,
         messageId: sentMessage.id,
         content: args.join(' '),
+        embed: false,
         active: true,
       });
     }
