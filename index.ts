@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { readdirSync } from 'fs';
+import Database from './db/Database.js';
 
 const client = new Client({ 
   intents: [
@@ -26,5 +27,13 @@ eventFiles.forEach(async (eventFile) => {
     client.on(event.name, async (...args) => await event.execute(...args));
   }
 });
+
+(async () => {
+  try {
+    await Database.init();
+  } catch(e) {
+    console.error(e);
+  }
+})();
 
 client.login(process.env.TOKEN);
