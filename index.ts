@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { Client, GatewayIntentBits } from 'discord.js';
-import { readFileSync } from 'fs';
+import { readdirSync } from 'fs';
 
 const client = new Client({ 
   intents: [
@@ -9,17 +9,22 @@ const client = new Client({
     GatewayIntentBits.MessageContent
   ]
 });
-const { prefix } = JSON.parse(readFileSync('./config.json', 'utf-8'));
+const eventFiles = readdirSync('./events');
 
-client.on('ready', (client) => {
-  console.log(`client is ready as ${client.user.tag}.`);
-});
-
-client.on('messageCreate', async (message) => {
-  if (!message.content.startsWith(prefix) || message.author.bot || message.channel.isDMBased()) return;
-  if (message.content.slice(prefix.length).toLocaleLowerCase().trim() === 'ping') await message.channel.send({
-    content: 'pong 🏓'
-  });
+eventFiles.forEach(async (eventFile) => {
+  const { default: event }: {
+    default: {
+      once: boolean,
+      name: string,
+      execute: (...args: any[]) => Promise<void>
+    }
+  } = await import(`./events/${eventFile}`);
+  
+  if (event.once) {
+    client.once(event.name, async (...args) => await event.execute(...args));
+  } else {
+    client.on(event.name, async (...args) => await event.execute(...args));
+  }
 });
 
 client.login(process.env.TOKEN);
