@@ -1,5 +1,6 @@
-import { Message } from 'discord.js';
+import { Client, Message } from 'discord.js';
 import { readFileSync, readdirSync } from 'fs';
+import watchStickyMessage from '../utils/watchStickyMessage.js';
 
 const { prefix } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 const commandFiles = readdirSync('./commands');
@@ -7,7 +8,8 @@ const commandFiles = readdirSync('./commands');
 export default {
   once: false,
   name: 'messageCreate',
-  execute: async (message: Message) => {
+  execute: async (client: Client, message: Message) => {
+    if (message.author.id !== client.user?.id) await watchStickyMessage(message);
     if (!message.content.startsWith(prefix) || message.author.bot || message.channel.isDMBased()) return;
     
     const args = message.content.slice(prefix.length).trim().split(/ /g);

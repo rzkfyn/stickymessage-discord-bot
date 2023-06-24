@@ -17,14 +17,14 @@ eventFiles.forEach(async (eventFile) => {
     default: {
       once: boolean,
       name: string,
-      execute: (...args: any[]) => Promise<void>
+      execute: (client: Client, ...args: any[]) => Promise<void>
     }
   } = await import(`./events/${eventFile}`);
   
   if (event.once) {
-    client.once(event.name, async (...args) => await event.execute(...args));
+    client.once(event.name, async (...args) => await event.execute(client, ...args));
   } else {
-    client.on(event.name, async (...args) => await event.execute(...args));
+    client.on(event.name, async (...args) => await event.execute(client, ...args));
   }
 });
 

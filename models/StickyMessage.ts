@@ -3,7 +3,9 @@ import { Schema, model } from 'mongoose';
 const schema = new Schema({
   serverId: String,
   channelId: String,
-  content: String
+  messageId: String,
+  content: String,
+  active: Boolean
 }, {
   timestamps: true
 });
