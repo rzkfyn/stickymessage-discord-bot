@@ -21,8 +21,9 @@ export const run = async (message: Message, args: string[])  => {
     ] });
 
     if (stickyMessage) {
-      await message.channel.messages.fetch();
-      const lastStickyMessage = message.channel.messages.cache.get(stickyMessage.messageId as string);
+      let lastStickyMessage = message.channel.messages.cache.get(stickyMessage.messageId as string);
+      if (!lastStickyMessage) await message.channel.messages.fetch();
+      lastStickyMessage = message.channel.messages.cache.get(stickyMessage.messageId as string);
       if (lastStickyMessage?.deletable) await lastStickyMessage.delete();
 
       await StickyMessage.updateOne({ serverId: message.guildId, channelId: message.channelId }, {
