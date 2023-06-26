@@ -9,7 +9,7 @@ export default {
   once: false,
   name: 'messageCreate',
   execute: async (client: Client, message: Message) => {
-    if (message.author.id !== client.user?.id) await watchStickyMessage(message);
+    if (message.author.id !== client.user?.id && !message.content.startsWith(prefix)) await watchStickyMessage(message);
     if (!message.content.startsWith(prefix) || message.author.bot || message.channel.isDMBased()) return;
     
     const args = message.content.slice(prefix.length).trim().split(/ /g);

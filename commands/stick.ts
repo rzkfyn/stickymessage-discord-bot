@@ -9,8 +9,9 @@ export const run = async (message: Message, args: string[]) => {
     const sentMessage = await message.channel.send(args.join(' '));
 
     if (stickyMessage) {
+      await message.channel.messages.fetch();
       const lasStickyMessage = message.channel.messages.cache.get(stickyMessage.messageId as string);
-      if (lasStickyMessage) await lasStickyMessage.delete();
+      if (lasStickyMessage?.deletable) await lasStickyMessage.delete();
 
       await StickyMessage.updateOne({ serverId: message.guildId, channelId: message.channelId }, {
         content: args.join(' '), messageId: sentMessage.id, embed: false, active: true
@@ -25,6 +26,7 @@ export const run = async (message: Message, args: string[]) => {
         active: true,
       });
     }
+
     return await message.react('👌');
   } catch(e) {
     console.log(e);
