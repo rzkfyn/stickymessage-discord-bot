@@ -30,7 +30,7 @@ export const run = async (message: Message) => {
       sentMessage = await message.channel.send(stickyMessage?.content as string);
     }
 
-    await StickyMessage.updateOne({ serverId: message.guildId, channelId: message.guildId }, {
+    await StickyMessage.updateOne({ serverId: message.guildId, channelId: message.channelId }, {
       active: true, messageId: sentMessage.id
     });
 
