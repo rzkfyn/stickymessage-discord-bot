@@ -14,12 +14,13 @@ export default {
     
     const args = message.content.slice(prefix.length).trim().split(/ /g);
     const command = args.shift()?.toLowerCase();
-
     for (const commandFile of commandFiles) {
-      if (command === commandFile.replace(/(.ts|.js)/, '')) {
-        const { run } = await import(`../commands/${commandFile}`) as { run: (message: Message, args: string[]) => Promise<void> };
-        return await run(message, args);
+      if (command === commandFile.replace(/(\.ts|\.js)/, '')) {
+        const { run } = await import(`../commands/${commandFile}`) as { run: (message: Message, args: string[], client: Client) => Promise<void> };
+        return await run(message, args, client);
       }
     }
+
+    return await watchStickyMessage(message);
   }
 };

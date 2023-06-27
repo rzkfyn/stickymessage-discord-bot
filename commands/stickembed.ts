@@ -44,6 +44,7 @@ export const run = async (message: Message, args: string[])  => {
         channelId: message.channelId,
         serverId: message.guildId,
         embed: true,
+        active: true,
         image,
         content: args.join(' ')
       });

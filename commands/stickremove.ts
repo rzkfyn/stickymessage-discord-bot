@@ -4,7 +4,7 @@ import watchStickyMessage from '../utils/watchStickyMessage.js';
 import StickyMessage from '../models/StickyMessage.js';
 
 export const run = async (message: Message) => {
-  if (!checkUserPermission) {
+  if (!checkUserPermission(message)) {
     await message.reply({
       content: '❌ | you must have `ManageMessages` permission to use this command!'
     });
