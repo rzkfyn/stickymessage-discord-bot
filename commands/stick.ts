@@ -1,7 +1,16 @@
 import { Message } from 'discord.js';
 import StickyMessage from '../models/StickyMessage.js';
+import checkUserPermission from '../utils/checkUserPermission.js';
+import watchStickyMessage from '../utils/watchStickyMessage.js';
 
 export const run = async (message: Message, args: string[]) => {
+  if (!checkUserPermission(message)) {
+    await message.reply({
+      content: '❌ | you must have `ManageMessages` permission to use this command!'
+    });
+
+    return await watchStickyMessage(message);
+  }
   if (!args[0]) return;
 
   try {
