@@ -1,8 +1,11 @@
 import { Client, EmbedBuilder, Message } from 'discord.js';
+import { readFileSync } from 'fs';
 import StickyMessage from '../models/StickyMessage.js';
 import watchStickyMessage from '../utils/watchStickyMessage.js';
 
-export const run  = async (message: Message, _: string[], client: Client) => {
+const { prefix } = JSON.parse(readFileSync('./config.json', 'utf-8'));
+
+export const run = async (message: Message, _: string[], client: Client) => {
   try {
     const stickyMessages = await StickyMessage.find({ serverId: message.guildId });
     let desc = '';
@@ -42,3 +45,10 @@ export const run  = async (message: Message, _: string[], client: Client) => {
 
   return await watchStickyMessage(message);
 };  
+
+
+export const help = {
+  name: 'sticklist',
+  description: 'shows the sticky message lists from this server.',
+  example: `${prefix} sticklist`
+};

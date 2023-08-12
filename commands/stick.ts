@@ -1,7 +1,10 @@
 import { Message } from 'discord.js';
+import { readFileSync } from 'fs';
 import StickyMessage from '../models/StickyMessage.js';
 import checkUserPermission from '../utils/checkUserPermission.js';
 import watchStickyMessage from '../utils/watchStickyMessage.js';
+
+const { prefix } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 
 export const run = async (message: Message, args: string[]) => {
   if (!checkUserPermission(message)) {
@@ -11,7 +14,7 @@ export const run = async (message: Message, args: string[]) => {
 
     return await watchStickyMessage(message);
   }
-  if (!args[0]) return;
+  if (!args[0]) return message.react('❌');
 
   try {
     const stickyMessage = await StickyMessage.findOne({ serverId: message.guildId, channelId: message.channelId });
@@ -42,4 +45,10 @@ export const run = async (message: Message, args: string[]) => {
     console.log(e);
     await message.react('❌');
   }
+};
+
+export const help = {
+  name: 'stick <message>',
+  description: 'sticks a message.',
+  example: `${prefix} stick hello, world`
 };

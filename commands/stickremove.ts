@@ -1,7 +1,10 @@
 import { Message } from 'discord.js';
+import { readFileSync } from 'fs';
 import checkUserPermission from '../utils/checkUserPermission.js';
 import watchStickyMessage from '../utils/watchStickyMessage.js';
 import StickyMessage from '../models/StickyMessage.js';
+
+const { prefix } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 
 export const run = async (message: Message) => {
   if (!checkUserPermission(message)) {
@@ -26,4 +29,11 @@ export const run = async (message: Message) => {
     console.log(e);
     return await message.react('❌');
   }
+};
+
+
+export const help = {
+  name: 'stickremove',
+  description: 'removes a sticky message from this channel.',
+  example: `${prefix} stickremove`
 };

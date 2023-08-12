@@ -1,7 +1,10 @@
 import { Message, EmbedBuilder } from 'discord.js';
+import { readFileSync } from 'fs';
 import StickyMessage from '../models/StickyMessage.js';
 import checkUserPermission from '../utils/checkUserPermission.js';
 import watchStickyMessage from '../utils/watchStickyMessage.js';
+
+const { prefix } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 
 export const run = async (message: Message) => {
   if (!checkUserPermission(message)) {
@@ -39,4 +42,10 @@ export const run = async (message: Message) => {
     console.log(e);
     return await message.react('❌');
   }
+};
+
+export const help = {
+  name: 'stickstart',
+  description: 'starts a stopped sticky message from this channel.',
+  example: `${prefix} stickstart`
 };

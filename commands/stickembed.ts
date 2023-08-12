@@ -1,17 +1,20 @@
 import { Attachment, EmbedBuilder, Message } from 'discord.js';
+import { readFileSync } from 'fs';
 import StickyMessage from '../models/StickyMessage.js';
 import checkUserPermission from '../utils/checkUserPermission.js';
 import watchStickyMessage from '../utils/watchStickyMessage.js';
 
+const { prefix } = JSON.parse(readFileSync('./config.json', 'utf-8'));
+
 export const run = async (message: Message, args: string[])  => {  
   if (!checkUserPermission(message)) {
-    return await message.reply({
+    await message.reply({
       content: '❌ | you must have `ManageMessages` permission to use this command!'
     });
 
     return await watchStickyMessage(message);
   }
-  if (!args[0]) return;
+  if (!args[0]) return message.react('❌');
   
   try {
     const stickyMessage = await StickyMessage.findOne({ serverId: message.guildId, channelId: message.channelId });
@@ -55,4 +58,10 @@ export const run = async (message: Message, args: string[])  => {
     console.log(e);
     return await message.react('❌');
   }
+};
+
+export const help = {
+  name: 'stickembed <message>',
+  description: 'sticks an embed message (you can attach an image!).',
+  example: `${prefix} stickembed hello, world`
 };
